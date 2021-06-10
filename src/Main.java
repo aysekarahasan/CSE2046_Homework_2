@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
 
-    public static int[] getItemValues(int itemCount, BufferedReader reader) throws Exception {
+    public static int[] readMultilineInput(int itemCount, BufferedReader reader) throws Exception {
 
         int itemValuesCounter = 0;
         int[] itemValues = new int[itemCount];
@@ -27,32 +27,13 @@ public class Main {
 
     }
 
-    public static int[] getKnapsackWeights(int itemCount, BufferedReader reader) throws Exception {
 
-        int itemValuesCounter = 0;
-        int[] itemValues = new int[itemCount];
-
-        while (itemValuesCounter < itemCount - 1) {
-
-            String line = reader.readLine();
-            String[] list = line.split(" ");
-
-            for (int i = 0; i < list.length; i++) {
-                itemValues[itemValuesCounter] = Integer.parseInt(list[i]);
-                itemValuesCounter++;
-            }
-
-        }
-
-        return itemValues;
-
-    }
 
     public static void main(String[] args) {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new FileReader("sample2.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("sample3.txt"));
 
 
             String firstLine = reader.readLine();
@@ -61,22 +42,16 @@ public class Main {
             int itemCount = Integer.parseInt(firstLineArray[1]); // Same for each knapsack
 
 
-            int[] itemValues = getItemValues(itemCount, reader);
+            int[] itemValues = readMultilineInput(itemCount, reader);
 
 
-            int[] knapsackCapacities = new int[knapsackCount];
-            String line = reader.readLine();
-            String[] list = line.split(" ");
-
-            for (int i = 0; i < knapsackCount; i++) {
-                knapsackCapacities[i] = Integer.parseInt(list[i]);
-            }
+            int[] knapsackCapacities = readMultilineInput(knapsackCount,reader );
 
             List<int[]> knapsacksWeights = new ArrayList<int[]>();
 
             for (int i = 0; i < knapsackCount; i++) {
 
-                knapsacksWeights.add(getKnapsackWeights(itemCount, reader));
+                knapsacksWeights.add(readMultilineInput(itemCount, reader));
 
             }
 
