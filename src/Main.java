@@ -33,7 +33,7 @@ public class Main {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new FileReader("sample3.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("test4.txt"));
 
 
             String firstLine = reader.readLine();
