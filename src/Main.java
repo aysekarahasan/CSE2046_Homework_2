@@ -43,8 +43,6 @@ public class Main {
 
 
             int[] itemValues = readMultilineInput(itemCount, reader);
-
-
             int[] knapsackCapacities = readMultilineInput(knapsackCount,reader );
 
             List<int[]> knapsacksWeights = new ArrayList<int[]>();
@@ -56,6 +54,7 @@ public class Main {
             }
 
 
+
             greedyHeursitic(knapsacksWeights, itemValues, knapsackCapacities);
 
 
@@ -65,11 +64,7 @@ public class Main {
 
     }
 
-    public static void greedyHeursitic(List<int[]> knapsackWeights, int[] itemValues, int[] knapsackCapacities) {
-
-
-        // 1. Calculate sum of value/weight for each item.
-
+    public static List<Item> generateItemsList(List<int[]> knapsackWeights,int[] itemValues, int[] knapsackCapacities){
 
         List<Item> items = new ArrayList<>();
 
@@ -90,6 +85,44 @@ public class Main {
         }
 
         Collections.sort(items); // Sorts items from highest valueOverTotalRelativeWeight to lowest.
+        return items;
+
+    }
+
+    public static List<Item> updateItemList(List<Item> items,List<int[]> knapsackWeights,int[] remainingKnapsackCapacities){
+
+        List<Item> newItems = new ArrayList<>();
+
+        for (int i = 0; i < items.size(); i++) { // For each item.
+
+            // 1. Calculate 'Total relative weight'
+
+            int value = items.get(i).value;
+
+            int[] weights = items.get(i).weights;
+
+            double sumOfRelativeWeights = getSumOfRelativeWeights(weights, remainingKnapsackCapacities);
+
+            double valueOverPercentageWeight = value / sumOfRelativeWeights; // This is the value we will sort respect to.
+
+            int index = items.get(i).originalIndex;
+
+            Item item = new Item(value, weights, valueOverPercentageWeight, index);
+            newItems.add(item);
+        }
+
+        Collections.sort(newItems); // Sorts items from highest valueOverTotalRelativeWeight to lowest.
+        return newItems;
+
+    }
+
+    public static void greedyHeursitic(List<int[]> knapsackWeights, int[] itemValues, int[] knapsackCapacities) {
+
+
+        // 1. Calculate sum of value/weight for each item.
+
+        List<Item> items = generateItemsList(knapsackWeights,itemValues,knapsackCapacities);
+
 
         int[] remainingKnapsackCapacities = knapsackCapacities.clone();
         int[] selectedElements = new int[items.size()];
@@ -108,7 +141,8 @@ public class Main {
             selectedElements[currentItem.originalIndex] = 1;
             totalValue += currentItem.value;
 
-            remainingKnapsackCapacities = updateRemainingCapacities(currentItem.weights, remainingKnapsackCapacities);
+            updateRemainingCapacities(currentItem.weights, remainingKnapsackCapacities);
+            items = updateItemList(items,knapsackWeights,remainingKnapsackCapacities);
 
 
         }
