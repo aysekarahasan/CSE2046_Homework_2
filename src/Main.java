@@ -55,7 +55,7 @@ public class Main {
 
 
 
-            greedyHeursitic(knapsacksWeights, itemValues, knapsackCapacities);
+            greedyHeuristic(knapsacksWeights, itemValues, knapsackCapacities);
 
 
         } catch (Exception e) {
@@ -89,7 +89,7 @@ public class Main {
 
     }
 
-    public static List<Item> updateItemList(List<Item> items,List<int[]> knapsackWeights,int[] remainingKnapsackCapacities){
+    public static List<Item> updateItemList(List<Item> items,int[] remainingKnapsackCapacities){
 
         List<Item> newItems = new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class Main {
 
     }
 
-    public static void greedyHeursitic(List<int[]> knapsackWeights, int[] itemValues, int[] knapsackCapacities) {
+    public static void greedyHeuristic(List<int[]> knapsackWeights, int[] itemValues, int[] knapsackCapacities) {
 
 
         // 1. Calculate sum of value/weight for each item.
@@ -142,7 +142,7 @@ public class Main {
             totalValue += currentItem.value;
 
             updateRemainingCapacities(currentItem.weights, remainingKnapsackCapacities);
-            items = updateItemList(items,knapsackWeights,remainingKnapsackCapacities);
+            items = updateItemList(items,remainingKnapsackCapacities);
 
 
         }
@@ -193,7 +193,6 @@ public class Main {
         We found the weight of an item in each knapsack (weights array)
         now we divide the weight to the capacity to find the relative weight percentage.
         And add all of them together
-        //todo instead of adding them think about averaging or something like that ?
          */
 
         double sum = 0;
