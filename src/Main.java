@@ -4,6 +4,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/*
+
+CSE2046 Homework 2
+
+Ahmet Akıl 150118038
+Ayşenur Karahasan 150117026
+Osman Erikci 150117038
+
+ */
+
 public class Main {
 
     public static int[] readMultilineInput(int itemCount, BufferedReader reader) throws Exception {
@@ -28,7 +38,6 @@ public class Main {
     }
 
 
-
     public static void main(String[] args) {
 
         try {
@@ -43,7 +52,7 @@ public class Main {
 
 
             int[] itemValues = readMultilineInput(itemCount, reader);
-            int[] knapsackCapacities = readMultilineInput(knapsackCount,reader );
+            int[] knapsackCapacities = readMultilineInput(knapsackCount, reader);
 
             List<int[]> knapsacksWeights = new ArrayList<int[]>();
 
@@ -52,7 +61,6 @@ public class Main {
                 knapsacksWeights.add(readMultilineInput(itemCount, reader));
 
             }
-
 
 
             greedyHeuristic(knapsacksWeights, itemValues, knapsackCapacities);
@@ -64,7 +72,7 @@ public class Main {
 
     }
 
-    public static List<Item> generateItemsList(List<int[]> knapsackWeights,int[] itemValues, int[] knapsackCapacities){
+    public static List<Item> generateItemsList(List<int[]> knapsackWeights, int[] itemValues, int[] knapsackCapacities) {
 
         List<Item> items = new ArrayList<>();
 
@@ -89,13 +97,11 @@ public class Main {
 
     }
 
-    public static List<Item> updateItemList(List<Item> items,int[] remainingKnapsackCapacities){
+    public static List<Item> updateItemList(List<Item> items, int[] remainingKnapsackCapacities) {
 
         List<Item> newItems = new ArrayList<>();
 
         for (int i = 0; i < items.size(); i++) { // For each item.
-
-            // 1. Calculate 'Total relative weight'
 
             int value = items.get(i).value;
 
@@ -121,7 +127,7 @@ public class Main {
 
         // 1. Calculate sum of value/weight for each item.
 
-        List<Item> items = generateItemsList(knapsackWeights,itemValues,knapsackCapacities);
+        List<Item> items = generateItemsList(knapsackWeights, itemValues, knapsackCapacities);
 
 
         int[] remainingKnapsackCapacities = knapsackCapacities.clone();
@@ -142,28 +148,35 @@ public class Main {
             totalValue += currentItem.value;
 
             updateRemainingCapacities(currentItem.weights, remainingKnapsackCapacities);
-            items = updateItemList(items,remainingKnapsackCapacities);
+            /*
+                At the end of each iteration update the item list
+            Calculate each items 'valueOverTotalRelativeWeight' with respect to the new 'remainingKnapsackCapacities'
+            And sort again with respect to this value.
+                This approach improved the results of our algorithm since it also considers
+             the remaining capacity of knapsacks.
+             */
+            items = updateItemList(items, remainingKnapsackCapacities);
 
 
         }
         System.out.println("Total Value: " + totalValue);
         System.out.println(Arrays.toString(selectedElements));
-        writeToOutputFile(totalValue,selectedElements);
+        writeToOutputFile(totalValue, selectedElements);
 
 
     }
 
-    public static void writeToOutputFile(int totalValue,int[] selectedElements ) {
+    public static void writeToOutputFile(int totalValue, int[] selectedElements) {
 
         try {
             FileWriter file = new FileWriter("output.txt");
             BufferedWriter writer = new BufferedWriter(file);
-            writer.write(totalValue+"");
+            writer.write(totalValue + "");
             writer.newLine();
 
-            for(int i : selectedElements){
+            for (int i : selectedElements) {
 
-                writer.write(i+"");
+                writer.write(i + "");
                 writer.newLine();
             }
 

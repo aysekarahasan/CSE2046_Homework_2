@@ -3,6 +3,11 @@ public class Item implements Comparable<Item> {
 
     int value;
     int[] weights;
+
+    /*
+    The main value we use to sort the item lists.
+    valueOverTotalRelativeWeight = value / SUM[(weight * 100 / capacity) for each knapsack ]
+     */
     double valueOverTotalRelativeWeight;
 
     /*
